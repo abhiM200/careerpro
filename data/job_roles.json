@@ -1,0 +1,107 @@
+[
+  {
+    "title": "Software Engineer",
+    "skills": ["python", "java", "javascript", "algorithms", "data structures", "git", "sql", "rest api", "oop"],
+    "description": "Build and maintain software systems, write clean code, and collaborate with engineering teams.",
+    "avg_salary": "$95,000 - $150,000",
+    "demand": "Very High"
+  },
+  {
+    "title": "Data Scientist",
+    "skills": ["python", "machine learning", "statistics", "pandas", "numpy", "scikit-learn", "sql", "data visualization", "r"],
+    "description": "Analyze complex datasets to derive insights and build predictive models.",
+    "avg_salary": "$90,000 - $145,000",
+    "demand": "High"
+  },
+  {
+    "title": "Machine Learning Engineer",
+    "skills": ["python", "tensorflow", "pytorch", "machine learning", "deep learning", "mlops", "docker", "kubernetes", "aws"],
+    "description": "Design and deploy ML models at scale in production environments.",
+    "avg_salary": "$110,000 - $180,000",
+    "demand": "Very High"
+  },
+  {
+    "title": "Frontend Developer",
+    "skills": ["html", "css", "javascript", "react", "vue", "typescript", "responsive design", "git", "rest api"],
+    "description": "Create engaging user interfaces and experiences for web applications.",
+    "avg_salary": "$75,000 - $130,000",
+    "demand": "High"
+  },
+  {
+    "title": "Backend Developer",
+    "skills": ["python", "node.js", "java", "sql", "nosql", "rest api", "microservices", "docker", "git"],
+    "description": "Build and maintain server-side logic, databases, and APIs.",
+    "avg_salary": "$85,000 - $145,000",
+    "demand": "High"
+  },
+  {
+    "title": "Full Stack Developer",
+    "skills": ["html", "css", "javascript", "react", "node.js", "python", "sql", "git", "rest api", "docker"],
+    "description": "Develop both frontend and backend components of web applications.",
+    "avg_salary": "$90,000 - $155,000",
+    "demand": "Very High"
+  },
+  {
+    "title": "DevOps Engineer",
+    "skills": ["docker", "kubernetes", "aws", "azure", "ci/cd", "linux", "python", "terraform", "monitoring"],
+    "description": "Bridge development and operations, automating infrastructure and deployment pipelines.",
+    "avg_salary": "$95,000 - $160,000",
+    "demand": "High"
+  },
+  {
+    "title": "Cloud Architect",
+    "skills": ["aws", "azure", "gcp", "cloud", "terraform", "docker", "kubernetes", "security", "networking"],
+    "description": "Design and oversee cloud infrastructure strategies and architectures.",
+    "avg_salary": "$120,000 - $200,000",
+    "demand": "Very High"
+  },
+  {
+    "title": "Data Engineer",
+    "skills": ["python", "sql", "spark", "hadoop", "etl", "airflow", "data warehouse", "kafka", "aws"],
+    "description": "Build data pipelines and infrastructure to support analytics and ML teams.",
+    "avg_salary": "$100,000 - $160,000",
+    "demand": "High"
+  },
+  {
+    "title": "Cybersecurity Analyst",
+    "skills": ["network security", "penetration testing", "siem", "firewall", "python", "linux", "vulnerability assessment", "compliance"],
+    "description": "Protect organizational systems and data from cyber threats and vulnerabilities.",
+    "avg_salary": "$85,000 - $145,000",
+    "demand": "High"
+  },
+  {
+    "title": "Product Manager",
+    "skills": ["product strategy", "agile", "scrum", "roadmap", "stakeholder management", "analytics", "user research", "jira"],
+    "description": "Define product vision, strategy, and roadmap while working with cross-functional teams.",
+    "avg_salary": "$100,000 - $170,000",
+    "demand": "High"
+  },
+  {
+    "title": "UX/UI Designer",
+    "skills": ["figma", "sketch", "user research", "wireframing", "prototyping", "css", "html", "design systems", "accessibility"],
+    "description": "Design intuitive and visually appealing user interfaces based on user research.",
+    "avg_salary": "$75,000 - $130,000",
+    "demand": "Moderate"
+  },
+  {
+    "title": "Business Analyst",
+    "skills": ["sql", "excel", "data analysis", "requirements gathering", "business intelligence", "tableau", "power bi", "agile"],
+    "description": "Analyze business processes and data to drive strategic decisions.",
+    "avg_salary": "$70,000 - $120,000",
+    "demand": "Moderate"
+  },
+  {
+    "title": "NLP Engineer",
+    "skills": ["python", "nlp", "spacy", "transformers", "bert", "deep learning", "machine learning", "text analysis"],
+    "description": "Build natural language processing systems and text-based AI applications.",
+    "avg_salary": "$105,000 - $165,000",
+    "demand": "High"
+  },
+  {
+    "title": "AI Research Scientist",
+    "skills": ["python", "deep learning", "pytorch", "tensorflow", "research", "mathematics", "statistics", "publications"],
+    "description": "Conduct fundamental and applied research to advance AI capabilities.",
+    "avg_salary": "$120,000 - $200,000",
+    "demand": "Very High"
+  }
+]

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Login — CareerPro</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #050810; color: #f1f5f9; font-family: 'DM Sans', sans-serif; min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+.card { background: #0c1220; border: 1px solid #7c3aed44; border-radius: 20px; padding: 48px 40px; width: 100%; max-width: 400px; text-align: center; }
+.logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 22px; margin-bottom: 8px; }
+.logo span { color: #7c3aed; }
+.badge { display: inline-block; background: rgba(124,58,237,0.1); color: #a78bfa; padding: 4px 14px; border-radius: 100px; font-size: 12px; margin-bottom: 32px; }
+.form-group { margin-bottom: 20px; text-align: left; }
+label { display: block; font-size: 14px; color: #94a3b8; margin-bottom: 8px; }
+input { width: 100%; padding: 12px 16px; background: #111827; border: 1px solid #1e2d45; border-radius: 10px; color: #f1f5f9; font-size: 15px; outline: none; }
+input:focus { border-color: #7c3aed; }
+.btn { width: 100%; padding: 14px; background: linear-gradient(135deg, #7c3aed, #2563eb); color: #fff; border: none; border-radius: 10px; font-size: 16px; font-weight: 600; cursor: pointer; }
+.error { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); color: #f87171; padding: 12px; border-radius: 8px; font-size: 14px; margin-bottom: 16px; display: none; }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="logo">Career<span>Pro</span></div>
+  <div class="badge">🔐 Admin Access</div>
+  <div class="error" id="error"></div>
+  <div class="form-group"><label>Admin Email</label><input type="email" id="email" placeholder="admin@careerpro.com" /></div>
+  <div class="form-group"><label>Password</label><input type="password" id="password" placeholder="••••••••" /></div>
+  <button class="btn" onclick="doLogin()">Admin Login</button>
+</div>
+<script>
+async function doLogin() {
+  const email = document.getElementById('email').value;
+  const password = document.getElementById('password').value;
+  const res = await fetch('/api/admin/login', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({email, password}) });
+  const data = await res.json();
+  if (data.success) window.location.href = '/admin/dashboard';
+  else { const e = document.getElementById('error'); e.textContent = data.error; e.style.display = 'block'; }
+}
+document.addEventListener('keydown', e => { if(e.key === 'Enter') doLogin(); });
+</script>
+</body>
+</html>

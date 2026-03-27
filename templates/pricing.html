@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Upgrade — CareerPro</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #050810; color: #f1f5f9; font-family: 'DM Sans', sans-serif; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px; }
+.bg { position: fixed; inset: 0; background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(37,99,235,0.12) 0%, transparent 70%); pointer-events: none; }
+.card { background: #0c1220; border: 2px solid #2563eb; border-radius: 24px; padding: 48px 40px; width: 100%; max-width: 480px; position: relative; z-index: 1; text-align: center; }
+.logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 22px; margin-bottom: 24px; }
+.logo span { color: #2563eb; }
+h2 { font-family: 'Syne', sans-serif; font-size: 28px; font-weight: 800; margin-bottom: 8px; }
+.sub { color: #64748b; margin-bottom: 32px; }
+.price { font-family: 'Syne', sans-serif; font-size: 72px; font-weight: 800; color: #fff; line-height: 1; }
+.price sup { font-size: 30px; vertical-align: super; }
+.price-note { color: #64748b; font-size: 15px; margin: 8px 0 32px; }
+.features { text-align: left; margin-bottom: 36px; }
+.feat { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid #1e2d45; font-size: 15px; }
+.feat:last-child { border: none; }
+.check { color: #10b981; font-size: 18px; }
+.btn-pay { width: 100%; padding: 16px; background: linear-gradient(135deg, #2563eb, #7c3aed); color: #fff; border: none; border-radius: 12px; font-size: 17px; font-weight: 700; cursor: pointer; transition: all 0.2s; }
+.btn-pay:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(37,99,235,0.4); }
+.btn-pay:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+.secure { color: #64748b; font-size: 13px; margin-top: 16px; }
+.error { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); color: #f87171; padding: 12px 16px; border-radius: 8px; font-size: 14px; margin-bottom: 16px; display: none; }
+</style>
+</head>
+<body>
+<div class="bg"></div>
+<div class="card">
+  <div class="logo">Career<span>Pro</span></div>
+  <h2>Unlock Full Access</h2>
+  <p class="sub">One-time payment — lifetime access to all features</p>
+  <div class="price"><sup>₹</sup>499</div>
+  <p class="price-note">Pay once, use forever. No subscriptions.</p>
+  <div class="error" id="error"></div>
+  <div class="features">
+    <div class="feat"><span class="check">✓</span> ATS Score with full breakdown</div>
+    <div class="feat"><span class="check">✓</span> LinkedIn Profile Review & AI Tips</div>
+    <div class="feat"><span class="check">✓</span> 15+ Job Role Matches</div>
+    <div class="feat"><span class="check">✓</span> AI Improvement Suggestions</div>
+    <div class="feat"><span class="check">✓</span> Keyword Gap Analysis</div>
+    <div class="feat"><span class="check">✓</span> Unlimited Resume Analyses</div>
+    <div class="feat"><span class="check">✓</span> Analysis History Dashboard</div>
+  </div>
+  <button class="btn-pay" id="payBtn" onclick="startPayment()">Pay ₹499 & Get Access →</button>
+  <p class="secure">🔒 Secured by Razorpay · UPI, Cards, Net Banking accepted</p>
+</div>
+<script>
+const RAZORPAY_KEY = '{{ razorpay_key }}';
+const AMOUNT = {{ price }};
+
+async function startPayment() {
+  const btn = document.getElementById('payBtn');
+  btn.disabled = true; btn.textContent = 'Creating order...';
+  try {
+    const res = await fetch('/api/create-order', { method: 'POST', headers: {'Content-Type': 'application/json'} });
+    const order = await res.json();
+    if (order.error) { showError(order.error); btn.disabled = false; btn.textContent = 'Pay ₹499 & Get Access →'; return; }
+    const options = {
+      key: RAZORPAY_KEY,
+      amount: order.amount,
+      currency: order.currency,
+      order_id: order.order_id,
+      name: 'CareerPro',
+      description: 'Lifetime Access — AI Career Tools',
+      theme: { color: '#2563eb' },
+      handler: async function(response) {
+        btn.textContent = 'Verifying payment...';
+        const verify = await fetch('/api/verify-payment', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify(response)
+        });
+        const result = await verify.json();
+        if (result.success) { window.location.href = result.redirect; }
+        else { showError('Payment verification failed. Contact support.'); btn.disabled = false; btn.textContent = 'Pay ₹499 & Get Access →'; }
+      },
+      modal: { ondismiss: function() { btn.disabled = false; btn.textContent = 'Pay ₹499 & Get Access →'; } }
+    };
+    const rzp = new Razorpay(options);
+    rzp.open();
+  } catch(e) {
+    showError('Something went wrong. Try again.'); btn.disabled = false; btn.textContent = 'Pay ₹499 & Get Access →';
+  }
+}
+function showError(msg) { const e = document.getElementById('error'); e.textContent = msg; e.style.display = 'block'; }
+</script>
+</body>
+</html>

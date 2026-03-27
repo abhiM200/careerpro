@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard — CareerPro</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #050810; color: #f1f5f9; font-family: 'DM Sans', sans-serif; }
+nav { background: #0c1220; border-bottom: 1px solid #1e2d45; padding: 16px 32px; display: flex; justify-content: space-between; align-items: center; }
+.logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 20px; }
+.logo span { color: #2563eb; }
+.nav-right { display: flex; align-items: center; gap: 16px; }
+.user-name { color: #94a3b8; font-size: 14px; }
+.btn-sm { padding: 8px 16px; border-radius: 8px; font-size: 14px; font-weight: 500; text-decoration: none; border: none; cursor: pointer; }
+.btn-primary { background: #2563eb; color: #fff; }
+.btn-logout { background: transparent; border: 1px solid #1e2d45; color: #64748b; }
+.btn-logout:hover { border-color: #ef4444; color: #ef4444; }
+.main { max-width: 1100px; margin: 0 auto; padding: 40px 24px; }
+.welcome { margin-bottom: 40px; }
+.welcome h1 { font-family: 'Syne', sans-serif; font-size: 28px; font-weight: 800; }
+.welcome p { color: #64748b; margin-top: 6px; }
+.cta-banner { background: linear-gradient(135deg, #0f2044, #1a1030); border: 1px solid #2563eb44; border-radius: 16px; padding: 32px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 40px; flex-wrap: wrap; gap: 16px; }
+.cta-banner h2 { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 700; }
+.cta-banner p { color: #64748b; font-size: 14px; margin-top: 4px; }
+.btn-analyze { padding: 12px 28px; background: linear-gradient(135deg, #2563eb, #7c3aed); color: #fff; border: none; border-radius: 10px; font-size: 15px; font-weight: 600; cursor: pointer; text-decoration: none; }
+.section-title { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 700; margin-bottom: 20px; }
+.history-table { background: #0c1220; border: 1px solid #1e2d45; border-radius: 12px; overflow: hidden; }
+table { width: 100%; border-collapse: collapse; }
+th { background: #111827; padding: 12px 16px; text-align: left; font-size: 12px; color: #64748b; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
+td { padding: 14px 16px; border-bottom: 1px solid #1e2d4522; font-size: 14px; }
+tr:last-child td { border: none; }
+tr:hover td { background: #1e2d4511; }
+.badge { padding: 3px 10px; border-radius: 100px; font-size: 12px; font-weight: 600; }
+.badge-green { background: rgba(16,185,129,0.1); color: #10b981; }
+.badge-blue { background: rgba(37,99,235,0.1); color: #60a5fa; }
+.badge-yellow { background: rgba(245,158,11,0.1); color: #f59e0b; }
+.badge-red { background: rgba(239,68,68,0.1); color: #f87171; }
+.empty { text-align: center; padding: 60px; color: #64748b; }
+</style>
+</head>
+<body>
+<nav>
+  <div class="logo">Career<span>Pro</span></div>
+  <div class="nav-right">
+    <span class="user-name">👋 {{ user.name }}</span>
+    <a href="/analyze-page" class="btn-sm btn-primary">+ New Analysis</a>
+    <a href="/api/logout" class="btn-sm btn-logout">Logout</a>
+  </div>
+</nav>
+<div class="main">
+  <div class="welcome">
+    <h1>Welcome back, {{ user.name.split()[0] }}! 👋</h1>
+    <p>Here's your career analysis dashboard</p>
+  </div>
+  <div class="cta-banner">
+    <div>
+      <h2>🚀 Analyze Your Resume</h2>
+      <p>Upload your resume + job description to get your ATS score, keyword analysis, and AI suggestions</p>
+    </div>
+    <a href="/analyze-page" class="btn-analyze">Start Analysis →</a>
+  </div>
+  <div class="section-title">📊 Recent Analyses</div>
+  <div class="history-table">
+    {% if analyses %}
+    <table>
+      <thead>
+        <tr>
+          <th>#</th><th>File</th><th>ATS Score</th><th>Tier</th><th>Skills</th><th>Top Job Match</th><th>Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for a in analyses %}
+        {% set score = a.ats_score or 0 %}
+        <tr>
+          <td style="color:#64748b;">{{ a.id }}</td>
+          <td style="color:#93c5fd;">{{ a.filename }}</td>
+          <td><strong style="color:{% if score >= 80 %}#10b981{% elif score >= 65 %}#60a5fa{% elif score >= 50 %}#f59e0b{% else %}#f87171{% endif %};">{{ '%.0f'|format(score) }}/100</strong></td>
+          <td><span class="badge {% if score >= 80 %}badge-green{% elif score >= 65 %}badge-blue{% elif score >= 50 %}badge-yellow{% else %}badge-red{% endif %}">{{ a.ats_tier }}</span></td>
+          <td>{{ a.skills_count }}</td>
+          <td style="color:#c4b5fd;">{{ a.top_job_match or '—' }}</td>
+          <td style="color:#64748b;font-size:12px;">{{ a.created_at[:16] if a.created_at else '—' }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <div class="empty">
+      <div style="font-size:48px;margin-bottom:16px;">📄</div>
+      <p>No analyses yet.</p>
+      <p style="margin-top:8px;"><a href="/analyze-page" style="color:#60a5fa;">Start your first analysis →</a></p>
+    </div>
+    {% endif %}
+  </div>
+</div>
+</body>
+</html>

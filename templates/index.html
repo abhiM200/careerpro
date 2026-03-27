@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CareerPro — AI-Powered Career Acceleration</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #050810;
+  --surface: #0c1220;
+  --surface2: #111827;
+  --border: #1e2d45;
+  --accent: #2563eb;
+  --accent2: #7c3aed;
+  --gold: #f59e0b;
+  --text: #f1f5f9;
+  --muted: #64748b;
+  --green: #10b981;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; overflow-x: hidden; }
+
+/* NAV */
+nav { position: fixed; top: 0; width: 100%; z-index: 100; padding: 18px 48px; display: flex; justify-content: space-between; align-items: center; background: rgba(5,8,16,0.85); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); }
+.nav-logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 22px; color: #fff; text-decoration: none; }
+.nav-logo span { color: var(--accent); }
+.nav-links { display: flex; gap: 32px; align-items: center; }
+.nav-links a { color: var(--muted); text-decoration: none; font-size: 15px; transition: color 0.2s; }
+.nav-links a:hover { color: var(--text); }
+.btn { padding: 10px 24px; border-radius: 8px; font-weight: 500; cursor: pointer; text-decoration: none; font-size: 15px; transition: all 0.2s; display: inline-block; }
+.btn-primary { background: var(--accent); color: #fff; border: none; }
+.btn-primary:hover { background: #1d4ed8; transform: translateY(-1px); }
+.btn-outline { border: 1px solid var(--border); color: var(--text); background: transparent; }
+.btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+
+/* HERO */
+.hero { min-height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center; padding: 120px 24px 80px; position: relative; overflow: hidden; }
+.hero-bg { position: absolute; inset: 0; background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(37,99,235,0.15) 0%, transparent 70%), radial-gradient(ellipse 60% 40% at 80% 80%, rgba(124,58,237,0.1) 0%, transparent 70%); }
+.grid-lines { position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px); background-size: 60px 60px; }
+.hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(37,99,235,0.1); border: 1px solid rgba(37,99,235,0.3); padding: 6px 16px; border-radius: 100px; font-size: 13px; color: #93c5fd; margin-bottom: 24px; }
+.hero-badge span { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+h1 { font-family: 'Syne', sans-serif; font-size: clamp(42px, 6vw, 80px); font-weight: 800; line-height: 1.05; margin-bottom: 24px; letter-spacing: -2px; }
+h1 .highlight { background: linear-gradient(135deg, #60a5fa, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.hero-sub { font-size: 18px; color: var(--muted); max-width: 560px; margin: 0 auto 40px; line-height: 1.7; }
+.hero-ctas { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+.btn-hero { padding: 14px 32px; font-size: 16px; border-radius: 10px; font-weight: 600; }
+.btn-hero-primary { background: linear-gradient(135deg, var(--accent), var(--accent2)); color: #fff; border: none; box-shadow: 0 0 40px rgba(37,99,235,0.3); }
+.btn-hero-primary:hover { transform: translateY(-2px); box-shadow: 0 0 60px rgba(37,99,235,0.4); }
+.hero-stats { display: flex; gap: 48px; justify-content: center; margin-top: 64px; flex-wrap: wrap; }
+.stat { text-align: center; }
+.stat .num { font-family: 'Syne', sans-serif; font-size: 32px; font-weight: 800; color: #fff; }
+.stat .label { font-size: 13px; color: var(--muted); margin-top: 4px; }
+
+/* FEATURES */
+.section { padding: 100px 24px; max-width: 1200px; margin: 0 auto; }
+.section-label { font-size: 13px; text-transform: uppercase; letter-spacing: 2px; color: var(--accent); font-weight: 600; margin-bottom: 12px; }
+.section-title { font-family: 'Syne', sans-serif; font-size: clamp(28px, 4vw, 48px); font-weight: 800; margin-bottom: 16px; letter-spacing: -1px; }
+.section-sub { color: var(--muted); font-size: 17px; max-width: 520px; line-height: 1.7; }
+.features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; margin-top: 64px; }
+.feature-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 32px; transition: all 0.3s; position: relative; overflow: hidden; }
+.feature-card::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(37,99,235,0.05) 0%, transparent 100%); opacity: 0; transition: opacity 0.3s; }
+.feature-card:hover { border-color: rgba(37,99,235,0.4); transform: translateY(-4px); }
+.feature-card:hover::before { opacity: 1; }
+.feature-icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; margin-bottom: 20px; background: rgba(37,99,235,0.1); }
+.feature-card h3 { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 700; margin-bottom: 10px; }
+.feature-card p { color: var(--muted); font-size: 15px; line-height: 1.7; }
+
+/* PRICING */
+.pricing-section { padding: 100px 24px; background: var(--surface); }
+.pricing-inner { max-width: 500px; margin: 0 auto; text-align: center; }
+.price-card { background: var(--bg); border: 2px solid var(--accent); border-radius: 24px; padding: 48px 40px; position: relative; overflow: hidden; margin-top: 48px; }
+.price-card::before { content: 'MOST POPULAR'; position: absolute; top: 20px; right: -30px; background: var(--gold); color: #000; font-size: 11px; font-weight: 700; padding: 4px 40px; transform: rotate(45deg); letter-spacing: 1px; }
+.price-amount { font-family: 'Syne', sans-serif; font-size: 64px; font-weight: 800; color: #fff; }
+.price-amount sup { font-size: 28px; vertical-align: super; }
+.price-amount sub { font-size: 18px; color: var(--muted); }
+.price-desc { color: var(--muted); margin: 12px 0 32px; font-size: 16px; }
+.price-features { text-align: left; margin-bottom: 36px; }
+.price-feature { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 15px; }
+.price-feature:last-child { border: none; }
+.check { color: var(--green); font-size: 18px; }
+.btn-pay { width: 100%; padding: 16px; font-size: 17px; font-weight: 700; border-radius: 12px; background: linear-gradient(135deg, var(--accent), var(--accent2)); color: #fff; border: none; cursor: pointer; transition: all 0.2s; }
+.btn-pay:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(37,99,235,0.4); }
+
+/* HOW IT WORKS */
+.steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 32px; margin-top: 64px; }
+.step { text-align: center; }
+.step-num { width: 56px; height: 56px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), var(--accent2)); display: flex; align-items: center; justify-content: center; font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 800; margin: 0 auto 20px; }
+.step h3 { font-family: 'Syne', sans-serif; font-weight: 700; margin-bottom: 8px; }
+.step p { color: var(--muted); font-size: 14px; line-height: 1.6; }
+
+/* FOOTER */
+footer { padding: 40px 48px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; flex-wrap: gap; }
+.footer-logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 18px; }
+.footer-logo span { color: var(--accent); }
+footer p { color: var(--muted); font-size: 13px; }
+
+@media (max-width: 768px) {
+  nav { padding: 16px 20px; }
+  .nav-links { gap: 16px; }
+  footer { flex-direction: column; gap: 12px; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-logo">Career<span>Pro</span></a>
+  <div class="nav-links">
+    <a href="#features">Features</a>
+    <a href="#how">How it works</a>
+    <a href="#pricing">Pricing</a>
+    <a href="/login" class="btn btn-outline">Login</a>
+    <a href="/register" class="btn btn-primary">Get Started</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="grid-lines"></div>
+  <div style="position:relative;z-index:1;">
+    <div class="hero-badge"><span></span> AI-Powered Career Tools</div>
+    <h1>Land Your <span class="highlight">Dream Job</span><br>with AI Precision</h1>
+    <p class="hero-sub">Get your resume ATS score, LinkedIn profile review, skill gap analysis, and personalized AI feedback — all in one platform.</p>
+    <div class="hero-ctas">
+      <a href="/register" class="btn btn-hero btn-hero-primary">Start for ₹499 →</a>
+      <a href="#features" class="btn btn-hero btn-outline">See Features</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><div class="num">15+</div><div class="label">Job Role Matches</div></div>
+      <div class="stat"><div class="num">100+</div><div class="label">Skills Analyzed</div></div>
+      <div class="stat"><div class="num">ATS</div><div class="label">Score 0–100</div></div>
+      <div class="stat"><div class="num">AI</div><div class="label">Smart Feedback</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="features">
+  <div class="section-label">What You Get</div>
+  <h2 class="section-title">Everything to accelerate<br>your career</h2>
+  <p class="section-sub">One payment, full access to all AI-powered career tools designed for the modern job market.</p>
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon">📊</div>
+      <h3>ATS Score Checker</h3>
+      <p>Know exactly how ATS systems rate your resume. Get a score from 0–100 with detailed breakdown by keyword match, formatting, experience, and more.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🔗</div>
+      <h3>LinkedIn Profile Review</h3>
+      <p>Get AI-powered tips to optimize your LinkedIn headline, about section, skills, and experience. Stand out to recruiters searching for talent.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">💼</div>
+      <h3>Job Role Matching</h3>
+      <p>Discover the 15+ job roles that best match your skillset with percentage scores, salary ranges, and demand indicators.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🧠</div>
+      <h3>AI Suggestions</h3>
+      <p>Get specific, actionable improvements — stronger action verbs, missing skills to add, formatting fixes, and keyword optimization tips.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🔍</div>
+      <h3>Keyword Analysis</h3>
+      <p>See exactly which keywords from the job description are in your resume and which are missing — so you know what to fix first.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📈</div>
+      <h3>Analysis History</h3>
+      <p>Track your progress over time. Every analysis is saved in your dashboard so you can compare improvements across versions.</p>
+    </div>
+  </div>
+</section>
+
+<section style="padding:100px 24px;background:var(--surface);" id="how">
+  <div style="max-width:1200px;margin:0 auto;text-align:center;">
+    <div class="section-label">Simple Process</div>
+    <h2 class="section-title">Get results in 3 steps</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <h3>Create Account</h3>
+        <p>Register with your email and make a one-time payment of ₹499 for lifetime access.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <h3>Upload Resume</h3>
+        <p>Upload your PDF or DOCX resume and paste the job description you're targeting.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <h3>Get AI Report</h3>
+        <p>Receive your ATS score, keyword analysis, job matches, and personalized AI suggestions instantly.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="pricing-section" id="pricing">
+  <div class="pricing-inner">
+    <div class="section-label" style="text-align:center;">Simple Pricing</div>
+    <h2 class="section-title" style="text-align:center;">One price,<br>full access</h2>
+    <div class="price-card">
+      <div class="price-amount"><sup>₹</sup>499<sub> one-time</sub></div>
+      <p class="price-desc">Lifetime access. No subscriptions. No hidden fees.</p>
+      <div class="price-features">
+        <div class="price-feature"><span class="check">✓</span> ATS Score (0–100) with breakdown</div>
+        <div class="price-feature"><span class="check">✓</span> LinkedIn Profile Review & Tips</div>
+        <div class="price-feature"><span class="check">✓</span> 15+ Job Role Matches</div>
+        <div class="price-feature"><span class="check">✓</span> AI Improvement Suggestions</div>
+        <div class="price-feature"><span class="check">✓</span> Keyword Gap Analysis</div>
+        <div class="price-feature"><span class="check">✓</span> Unlimited Resume Analyses</div>
+        <div class="price-feature"><span class="check">✓</span> Analysis History Dashboard</div>
+        <div class="price-feature"><span class="check">✓</span> Email Report (coming soon)</div>
+      </div>
+      <a href="/register" class="btn-pay">Get Started Now →</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">Career<span>Pro</span></div>
+  <p>Built with ❤️ by Abhishek Kumar Mishra · CareerPro © 2024</p>
+  <div style="display:flex;gap:16px;">
+    <a href="/login" style="color:var(--muted);text-decoration:none;font-size:14px;">Login</a>
+    <a href="/register" style="color:var(--muted);text-decoration:none;font-size:14px;">Register</a>
+  </div>
+</footer>
+
+</body>
+</html>
