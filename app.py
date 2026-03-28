@@ -29,10 +29,9 @@ app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=7)
 ALLOWED_EXTENSIONS = {'pdf', 'docx', 'doc'}
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
-# Razorpay
 RAZORPAY_KEY_ID = os.getenv('RAZORPAY_KEY_ID', '')
 RAZORPAY_KEY_SECRET = os.getenv('RAZORPAY_KEY_SECRET', '')
-PLAN_PRICE = int(os.getenv('PLAN_PRICE', '49900'))  # Rs 499 in paise
+PLAN_PRICE = int(os.getenv('PLAN_PRICE', '49900'))
 ADMIN_EMAIL = os.getenv('ADMIN_EMAIL', 'admin@careerpro.com')
 ADMIN_PASSWORD = os.getenv('ADMIN_PASSWORD', 'Admin@CareerPro2024')
 
@@ -50,7 +49,6 @@ except Exception as e:
     logger.error(f"DB init failed: {e}")
 
 
-# ─── Decorators ───────────────────────────────────────────
 def login_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
@@ -64,7 +62,6 @@ def payment_required(f):
     def decorated(*args, **kwargs):
         if 'user_id' not in session:
             return redirect(url_for('login_page'))
-        # BYPASS PAYMENT FOR TESTING
         bypass = os.getenv('BYPASS_PAYMENT', 'false').lower() == 'true'
         if bypass:
             return f(*args, **kwargs)
@@ -86,7 +83,6 @@ def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
-# ─── Pages ────────────────────────────────────────────────
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -111,6 +107,8 @@ def pricing_page():
 @login_required
 def dashboard():
     user = get_user_by_id(session['user_id'])
+    if not user:
+        user = {'name': session.get('user_name', 'User'), 'email': session.get('user_email', ''), 'is_paid': 0}
     analyses = get_user_analyses(session['user_id'], limit=10)
     return render_template('dashboard.html', user=user, analyses=analyses)
 
@@ -118,10 +116,11 @@ def dashboard():
 @payment_required
 def analyze_page():
     user = get_user_by_id(session['user_id'])
+    if not user:
+        user = {'name': session.get('user_name', 'User'), 'email': session.get('user_email', '')}
     return render_template('analyze.html', user=user)
 
 
-# ─── Auth APIs ────────────────────────────────────────────
 @app.route('/api/register', methods=['POST'])
 def register():
     try:
@@ -144,6 +143,10 @@ def register():
         session['user_id'] = user_id
         session['user_name'] = name
         session['user_email'] = email
+
+        bypass = os.getenv('BYPASS_PAYMENT', 'false').lower() == 'true'
+        if bypass:
+            return jsonify({'success': True, 'redirect': '/dashboard'})
         return jsonify({'success': True, 'redirect': '/pricing'})
     except Exception as e:
         return jsonify({'error': str(e)}), 500
@@ -164,7 +167,8 @@ def login():
         session['user_name'] = user['name']
         session['user_email'] = user['email']
 
-        if user.get('is_paid'):
+        bypass = os.getenv('BYPASS_PAYMENT', 'false').lower() == 'true'
+        if bypass or user.get('is_paid'):
             return jsonify({'success': True, 'redirect': '/dashboard'})
         return jsonify({'success': True, 'redirect': '/pricing'})
     except Exception as e:
@@ -176,7 +180,6 @@ def logout():
     return redirect(url_for('index'))
 
 
-# ─── Payment APIs ─────────────────────────────────────────
 @app.route('/api/create-order', methods=['POST'])
 @login_required
 def create_order():
@@ -211,7 +214,6 @@ def verify_payment():
         return jsonify({'error': 'Payment verification failed'}), 400
 
 
-# ─── Analysis API ─────────────────────────────────────────
 @app.route('/api/analyze', methods=['POST'])
 @payment_required
 def analyze():
@@ -282,11 +284,10 @@ def generate_linkedin_feedback(url, parsed):
             {'icon': '🔗', 'title': 'Custom URL', 'detail': 'Set linkedin.com/in/yourname — looks professional on resume and emails.', 'priority': 'Low'},
         ],
         'score': min(95, 60 + len(skills) * 2),
-        'summary': f'Your LinkedIn profile can be significantly improved. Focus on headline and about section first.'
+        'summary': 'Your LinkedIn profile can be significantly improved. Focus on headline and about section first.'
     }
 
 
-# ─── Admin ────────────────────────────────────────────────
 @app.route('/admin')
 def admin_login_page():
     if session.get('is_admin'):
@@ -298,7 +299,7 @@ def admin_login():
     data = request.get_json()
     if data.get('email') == ADMIN_EMAIL and data.get('password') == ADMIN_PASSWORD:
         session['is_admin'] = True
-        return jsonify({'success': True})
+        return jsonify({'success': True, 'redirect': '/admin/dashboard'})
     return jsonify({'error': 'Invalid credentials'}), 401
 
 @app.route('/api/admin/logout')
@@ -315,7 +316,6 @@ def admin_dashboard():
     return render_template('admin_dashboard.html', users=users, analyses=analyses, total_revenue=total_revenue)
 
 
-# ─── Health ───────────────────────────────────────────────
 @app.route('/health')
 def health():
     return jsonify({'status': 'healthy', 'app': 'CareerPro'})
